@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mysql
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=url_shortener
+      - MYSQL_ROOT_PASSWORD=toor
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    restart: always
+  app:
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      - MYSQL_DB=url_shortener
+      - MYSQL_HOST=localhost
+      - MYSQL_PASSWORD=toor
+    depends_on:
+      - db
+    restart: always
+volumes:
+  db-data:
