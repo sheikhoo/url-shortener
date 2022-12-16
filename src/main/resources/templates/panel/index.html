@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Panel</title>
+    <div th:replace="fragment/panel::head"></div>
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-pic js-tilt" data-tilt>
+                <p class="title">
+                    »Your Links:
+                </p>
+                <ul>
+                    <li th:each="link : ${links}">
+                        <i class="icofont-link">
+                            <a th:href="@{${setting.getSite_url() +'/'+  link.getShort_url()}}" th:text="${setting.getSite_url() +'/'+ link.getShort_url()}"></a>
+                        </i>
+                        <a th:href="@{'/link/deletelink?id=' + ${link.getId()}}"><i class="icofont-ui-delete" style="color: red;"></i></a>
+                        <div class="links">
+                            <i class="icofont-user-alt-3"><span th:text="${link.getUser() != null ? 'User: '+link.getUser().getName() : 'User: Guest'}"></span></i>
+                            <i class="icofont-ui-calendar"><span th:text="${'Create At: ' + #temporals.format(link.getCreate_at(), 'yyyy-MM-dd')}"></span></i>
+                            <i class="icofont-eye-alt"><span th:text="${'Total Click: ' + link.getClick()}"></span></i>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <form th:action="@{/link/addlink}" method="post" class="login100-form validate-form">
+					<span class="login100-form-title" th:text="${'Hi, ' + user.getName()}"></span>
+
+                <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                    <input class="input100" type="text" name="target_url" placeholder="Your Link">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn">
+                        shorten
+                    </button>
+                </div>
+                <div th:if="${shorten_link.getId()!=0}" style=" margin: 20px 0 0 0; background: #57b8462e; border-radius: 15px; padding: 5px 0 15px 0; ">
+                    <div class="text-center p-t-12" style="font-weight: bolder;">
+                            <span class="txt1">
+                                Short Link:
+                            </span>
+                        <a class="txt2" th:href="@{${setting.getSite_url()}+'/'+${shorten_link.getShort_url()}}" th:text="${setting.getSite_url()}+'/'+${shorten_link.getShort_url()}">
+
+                        </a>
+                    </div>
+                    <div class="text-center p-t-12">
+                            <span class="txt1">
+                                your link:
+                            </span>
+                        <a class="txt2" th:href="@{${shorten_link.getTarget_url()}}" th:text="${shorten_link.getTarget_url()}">
+                        </a>
+                    </div>
+                </div>
+                <div th:if="${err}" style=" margin: 20px 0 0 0; background: #57b8462e; border-radius: 15px; padding: 5px 0 15px 0; ">
+                    <div class="text-center p-t-12" style="font-weight: bolder;">
+                            <span class="txt1">
+                                Short Link:
+                            </span>
+                        <a class="txt2" th:href="@{${setting.getSite_url()}+'/'+${shorten_link.getShort_url()}}" th:text="${setting.getSite_url()}+'/'+${shorten_link.getShort_url()}">
+
+                        </a>
+                    </div>
+                    <div class="text-center p-t-12">
+                            <span class="txt1">
+                                your link:
+                            </span>
+                        <a class="txt2" th:href="@{${shorten_link.getTarget_url()}}" th:text="${shorten_link.getTarget_url()}">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="text-center p-t-136">
+                    <a class="txt2" th:href="@{/}">
+                        Create your Account
+                        <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div th:replace="fragment/panel::js"></div>
+
+</body>
+</html>

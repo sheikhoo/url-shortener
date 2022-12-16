@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title th:text="${setting.getSite_title() != null ? setting.getSite_title() : 'Url Shortener'}"></title>
+    <meta th:content="${setting.getSite_discription() != null ? setting.getSite_discription() : ''}" name="descriptison">
+    <meta th:content="${setting.getSite_title() != null ? setting.getSite_title() : 'Url Shortener'}" name="keywords">
+
+    <div th:replace="fragment/main::head"></div>
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="d-flex align-items-center demo">
+    <nav>
+        <a class="panel" th:href="@{/panel}"><i class="icofont-user-male"></i>Panel</a>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/}">About</a>
+    </nav>
+    <div class="container d-flex flex-column align-items-center" id="large-header">
+        <canvas id="demo-canvas"></canvas>
+        <div class="header-container" id="header-container">
+            <h1 th:text="${setting.getSite_title() != null ? setting.getSite_title() : 'Url Shortener'}"></h1>
+            <h2 th:text="${setting.getSite_discription() != null ? setting.getSite_discription() : ''}"></h2>
+            <div class="countdown d-flex justify-content-center">
+                <div>
+                    <h3 th:text="${number[0]}"></h3>
+                    <h4>Links</h4>
+                </div>
+                <div>
+                    <h3 th:text="${number[1]}"></h3>
+                    <h4>Users</h4>
+                </div>
+                <div>
+                    <h3 th:text="${number[2]}"></h3>
+                    <h4>Click</h4>
+                </div>
+
+
+            </div>
+
+
+        <div class="subscribe">
+            <h4>By clicking shorten, your link convert to short & memorable links</h4>
+            <form th:action="@{/link/addmainlink}" method="post" role="form" class="php-email-form">
+                <div class="subscribe-form">
+                    <input type="text" name="target_url" placeholder="Your Link"><input type="submit" value="shorten">
+                </div>
+                <div class="mt-2">
+                    <div class="loading">Loading</div>
+                    <div class="error-message"></div>
+                    <div class="sent-message">Your notification request was sent. Thank you!</div>
+                </div>
+            </form>
+            <div th:if="${shorten_link.getId()!=0}" class="shortened">
+                <p><i class="icofont-checked">short link: <a th:href="@{${setting.getSite_url()}+'/'+${shorten_link.getShort_url()}}" th:text="${setting.getSite_url()}+'/'+${shorten_link.getShort_url()}"></a></i></p>
+                <p><i class="icofont-link">your link: <a th:href="@{${shorten_link.getTarget_url()}}" th:text="${shorten_link.getTarget_url()}"></a></i></p>
+            </div>
+        </div>
+
+        <div class="social-links text-center">
+            <a href="#" class="twitter"><i class="icofont-twitter"></i></a>
+            <a href="#" class="facebook"><i class="icofont-facebook"></i></a>
+            <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
+            <a href="#" class="google-plus"><i class="icofont-skype"></i></a>
+            <a href="#" class="linkedin"><i class="icofont-linkedin"></i></a>
+        </div>
+        </div>
+
+    </div>
+</header><!-- End #header -->
+
+<main id="main">
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+        <div class="container">
+
+            <div class="row content">
+                <div class="col-lg-6 links-box">
+                    <p class="title">
+                        »Popular links:
+                    </p>
+                    <ul>
+                        <li th:each="link : ${plinks}">
+                            <i class="icofont-link">
+                                <a th:href="@{${setting.getSite_url() +'/'+  link.getShort_url()}}" th:text="${setting.getSite_url() +'/'+ link.getShort_url()}"></a>
+                            </i>
+
+                            <div class="links">
+                                <i class="icofont-user-alt-3"><span th:text="${link.getUser() != null ? 'User: '+link.getUser().getName() : 'User: Guest'}"></span></i>
+                                <i class="icofont-ui-calendar"><span th:text="${'Create At: ' + #temporals.format(link.getCreate_at(), 'yyyy-MM-dd')}"></span></i>
+                                <i class="icofont-eye-alt"><span th:text="${'Total Click: ' + link.getClick()}"></span></i>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 pt-4 pt-lg-0 links-box">
+                    <p class="title">
+                        »Latest links:
+                    </p>
+                    <ul>
+                        <li th:each="link : ${nlinks}">
+                            <i class="icofont-link">
+                                <a th:href="@{${setting.getSite_url() +'/'+  link.getShort_url()}}" th:text="${setting.getSite_url() +'/'+ link.getShort_url()}"></a>
+                            </i>
+
+                            <div class="links">
+                                <i class="icofont-user-alt-3"><span th:text="${link.getUser() != null ? 'User: '+link.getUser().getName() : 'User: Guest'}"></span></i>
+                                <i class="icofont-ui-calendar"><span th:text="${'Create At: ' + #temporals.format(link.getCreate_at(), 'yyyy-MM-dd')}"></span></i>
+                                <i class="icofont-eye-alt"><span th:text="${'Total Click: ' + link.getClick()}"></span></i>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section><!-- End About Us Section -->
+
+    <!-- ======= Contact Us Section ======= -->
+    <section id="contact" class="contact">
+        <div class="container">
+
+            <div class="section-title">
+                <h2>Contact Us</h2>
+            </div>
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-10">
+
+                    <div class="info-wrap">
+                        <div class="row">
+                            <div class="col-lg-4 info">
+                                <i class="icofont-google-map"></i>
+                                <h4>Location:</h4>
+                                <p th:text="${setting.getLocation()}"></p>
+                            </div>
+
+                            <div class="col-lg-4 info mt-4 mt-lg-0">
+                                <i class="icofont-envelope"></i>
+                                <h4>Email:</h4>
+                                <p th:text="${setting.getEmail()}"></p>
+                            </div>
+
+                            <div class="col-lg-4 info mt-4 mt-lg-0">
+                                <i class="icofont-phone"></i>
+                                <h4>Call:</h4>
+                                <p th:text="${setting.getTel()}"></p>
+                            </div>
+                        </div>
+                        <div class="social-links text-center">
+                            <a th:href="${setting.getTwitter()}" class="twitter"><i class="icofont-twitter"></i></a>
+                            <a th:href="${setting.getFacebook()}" class="facebook"><i class="icofont-facebook"></i></a>
+                            <a th:href="${setting.getInstagram()}" class="instagram"><i class="icofont-instagram"></i></a>
+                            <a th:href="${setting.getLinkedin()}" class="linkedin"><i class="icofont-linkedin"></i></a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+            <div class="row  justify-content-center">
+                <div class="col-lg-10">
+                    <form th:action="@{/cantactus}" method="post" role="form" class="php-email-form">
+                        <div class="form-row">
+                            <div class="col-md-6 form-group">
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                                <div class="validate"></div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                                <div class="validate"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="text" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                            <div class="validate"></div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="loading">Loading</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">Your message has been sent. Thank you!</div>
+                        </div>
+                        <div class="text-center"><button type="submit">Send Message</button></div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </section><!-- End Contact Us Section -->
+
+</main><!-- End #main -->
+
+<div th:replace="fragment/main::footer(${setting.getCopyright()})"></div>
+
+</body>
+
+</html>
