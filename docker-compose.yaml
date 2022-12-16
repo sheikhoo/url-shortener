@@ -17,7 +17,7 @@ services:
       - 8080:8080
     environment:
       - MYSQL_DB=url_shortener
-      - MYSQL_HOST=localhost
+      - MYSQL_HOST=db
       - MYSQL_PASSWORD=toor
     depends_on:
       - db
