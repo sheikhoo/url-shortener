@@ -1,8 +1,9 @@
 FROM maven:3.6.3-jdk-8 AS builder
-ADD . /project
-WORKDIR /project
-RUN mvn package -X
-FROM openjdk:8-jre
+ADD . /app
+WORKDIR /app
+RUN --mount=type=cache,target=/root/.m2 mvn -f /app/pom.xml clean package -DskipTests
+FROM openjdk:8-jre-slim
 
-COPY --from=builder /project/target/url_shortener-1.0.0.war  /app/url_shortener.war
-ENTRYPOINT ["java","-jar","/app/url_shortener.war"]
+COPY --from=builder /app/target/url_shortener-1.0.0.jar  url_shortener.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","url_shortener.jar"]
