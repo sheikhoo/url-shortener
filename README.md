@@ -25,3 +25,8 @@ And we are done, the **SpringBoot App** will be starting on port
 * Maven
 * thymeleaf
 * bootstrap
+
+# To-Do:
+- [ ] Admin panel
+- [ ] Manage links
+- [ ] Manage users
