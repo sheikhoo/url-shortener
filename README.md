@@ -23,3 +23,5 @@ And we are done, the **SpringBoot App** will be starting on port
 * starter-web
 * starter-security
 * Maven
+* thymeleaf
+* bootstrap
