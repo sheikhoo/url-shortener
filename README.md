@@ -28,5 +28,6 @@ And we are done, the **SpringBoot App** will be starting on port
 
 # To-Do:
 - [ ] Admin panel
+- [ ] Manage site setting
 - [ ] Manage links
 - [ ] Manage users
