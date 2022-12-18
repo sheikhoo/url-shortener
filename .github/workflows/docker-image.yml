@@ -18,6 +18,9 @@ jobs:
     - name: Start containers
       run: COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose up -d
       
+    - name: Test
+      run: docker run --network container:shortener-spring appropriate/curl -s --retry 10 --retry-connrefused http://localhost:8080/
+      
     - name: Stop containers
       if: always()
       run: docker-compose down
