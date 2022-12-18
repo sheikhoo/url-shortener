@@ -1,0 +1,23 @@
+name: Docker Compose CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  docker:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Start containers
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      
+    - name: Stop containers
+      if: always()
+      run: docker-compose -f "docker-compose.yml" down
