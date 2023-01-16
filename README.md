@@ -26,6 +26,30 @@ And we are done, the **SpringBoot App** will be starting on port
 * thymeleaf
 * bootstrap
 
+### kubernetes (Minikube)
+Create Docker image from Dockerfile and push on Dockerhub
+
+    docker build -t <your-docker-hub-id>/url_shortener .
+    docker push <your-docker-hub-id>/url_shortener
+    
+Crete pod
+
+    kubectl create deployment urlshortener --image=<your-docker-hub-id>/url_shortener
+    
+If error while pulling image
+
+1-Can use local Docker image on Minikube
+
+    minikube image load <IMAGE_NAME>
+    # Example
+    minikube image load sheikhoo/url_shortener
+    
+2-Can use `docker pull` on Minikube
+
+    minikube ssh docker pull <IMAGE_NAME>
+    # Example
+    minikube ssh docker pull sheikhoo/url_shortener
+   
 # To-Do:
 - [ ] Admin panel
 - [ ] Manage site setting
